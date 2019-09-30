@@ -9,7 +9,6 @@ let humidity = ""
 server.listen(6500,()=>{
     console.log("Server is running!")
 });
-// WARNING: app.listen(80) will NOT work here!
 
 app.get('/', function (req, res) {
   res.sendFile(__dirname + '/index.html');
@@ -28,7 +27,7 @@ app.get("/set/:suhu/:humidity",(req,res,next)=>{
 io.on('connection', function (socket) {
   setInterval(function(){
     request.get('http://hfloryiot.xyz/sensor2.php?id=AAAA&jenis=1',function(err,res,body){
-    console.log(body.split("|"))
+    console.log(body.split("|")) 
     suhu = body.split("|")[8]
     humidity = body.split("|")[9]
     console.log("suhu: "+suhu)
@@ -36,8 +35,8 @@ io.on('connection', function (socket) {
   });
     socket.emit('iot_push', { suhu: suhu, humidity: humidity});
   }, 1000);
-  socket.on('iot_push', function (data) {
-    console.log(data);
-  });
+    socket.on('iot_push', function (data) {
+      console.log(data);
+    });
   
 });
